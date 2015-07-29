@@ -24,6 +24,7 @@ class JSXCompiler(CompilerBase):
     def __init__(self, *args, **kwargs):
         CompilerBase.__init__(self, *args, **kwargs)
         self.transformer = JSXTransformer()
+        self.harmony = kwargs.get('harmony', False)
 
     def match_file(self, path):
         return path.endswith('.jsx')
@@ -32,6 +33,6 @@ class JSXCompiler(CompilerBase):
         if not outdated and not force:
             return
         try:
-            return self.transformer.transform(infile, outfile)
+            return self.transformer.transform(infile, outfile, harmony=self.harmony)
         except TransformError as e:
             raise CompilerError(str(e))
